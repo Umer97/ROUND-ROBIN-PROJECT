@@ -1,0 +1,161 @@
+#include<stdio.h> 
+int main() 
+{ 
+ 
+  int p,j,n,time,remain,flag=0,q,msq; 
+  int wait_time=0,turnaround_time=0,at[10],bt[10],rt[10]; 
+  printf("Enter Total Process:\t "); 
+  scanf("%d",&n); 
+  remain=n; 
+  for(p=0;p<n;p++) 
+  { 
+    printf("Enter Arrival Time  for Process  Number %d :",p+1); 
+    scanf("%d",&at[p]);
+    rt[p]=bt[p];
+  }
+     for(p=0;p<n;p++) 
+  { 
+    printf("Enter Burst Time for Process  Number %d :",p+1);  
+    scanf("%d",&bt[p]); 
+    rt[p]=bt[p]; 
+  } 
+  printf("Enter Time Quantum in milli seconds:\t"); 
+  scanf("%d",&msq); 
+  q=msq/10;
+  printf("\n\nProcess\t|\t Arrival TimeS\t|\t\t Burst Time \t|\tTurnaround Time\t|\tWaiting Time\n\n"); 
+  for(time=0,p=0;remain!=0;) 
+  { 
+    if(rt[p]<=q && rt[p]>0) 
+    { 
+      time+=rt[p]; 
+      rt[p]=0; 
+      flag=1; 
+    } 
+    else if(rt[p]>0) 
+    { 
+      rt[p]-=q; 
+      time+=q; 
+    } 
+    if(rt[p]==0 && flag==1) 
+    { 
+      remain--; 
+      printf(" P[%d]  \t|\t %d  \t\t|\t\t\t %d \t|\t %d  \t\t|\t\t %d  \n",p+1,at[p],bt[p],time-at[p],time-at[p]-bt[p]); 
+      wait_time+=time-at[p]-bt[p]; 
+      turnaround_time+=time-at[p]; 
+      flag=0; 
+    } 
+    if(p==n-1) 
+      p=0; 
+    else if(at[p+1]<=time) 
+      p++; 
+    else 
+      p=0; 
+  } 
+  printf("\nAverage Waiting Time= %f\n",wait_time*1.0/n); 
+  printf("Avg Turnaround Time = %f",turnaround_time*1.0/n); 
+  
+  return 0; 
+}
+
+/***********************************/
+test case 1
+Enter Total Process:     5
+Enter Arrival Time  for Process  Number 1 :1
+Enter Arrival Time  for Process  Number 2 :2
+Enter Arrival Time  for Process  Number 3 :3
+Enter Arrival Time  for Process  Number 4 :3
+Enter Arrival Time  for Process  Number 5 :4
+Enter Burst Time for Process  Number 1 :5
+Enter Burst Time for Process  Number 2 :7
+Enter Burst Time for Process  Number 3 :8
+Enter Burst Time for Process  Number 4 :9
+Enter Burst Time for Process  Number 5 :9
+Enter Time Quantum in milli seconds:    20
+
+
+Process |        Arrival TimeS  |                Burst Time     |       Turnaround Time |       Waiting Time
+
+ P[1]   |        1              |                        5      |        20             |            15
+ P[2]   |        2              |                        7      |        28             |            21
+ P[3]   |        3              |                        8      |        29             |            21
+ P[4]   |        3              |                        9      |        34             |            25
+ P[5]   |        4              |                        9      |        34             |            25
+
+Average Waiting Time= 21.400000
+Avg Turnaround Time = 29.000000
+--------------------------------
+Process exited after 17.67 seconds with return value 0
+Press any key to continue . . .
+test case2 
+Enter Total Process:     6
+Enter Arrival Time  for Process  Number 1 :1
+Enter Arrival Time  for Process  Number 2 :2
+Enter Arrival Time  for Process  Number 3 :3
+Enter Arrival Time  for Process  Number 4 :4
+Enter Arrival Time  for Process  Number 5 :5
+Enter Arrival Time  for Process  Number 6 :4
+Enter Burst Time for Process  Number 1 :6
+Enter Burst Time for Process  Number 2 :5
+Enter Burst Time for Process  Number 3 :9
+Enter Burst Time for Process  Number 4 :8
+Enter Burst Time for Process  Number 5 :7
+Enter Burst Time for Process  Number 6 :6
+Enter Time Quantum in milli seconds:    40
+
+
+Process |        Arrival TimeS  |                Burst Time     |       Turnaround Time |       Waiting Time
+
+ P[1]   |        1              |                        6      |        25             |            19
+ P[2]   |        2              |                        5      |        25             |            20
+ P[4]   |        4              |                        8      |        31             |            23
+ P[5]   |        5              |                        7      |        33             |            26
+ P[6]   |        4              |                        6      |        36             |            30
+ P[3]   |        3              |                        9      |        38             |            29
+
+Average Waiting Time= 24.500000
+Avg Turnaround Time = 31.333333
+--------------------------------
+Process exited after 30.9 seconds with return value 0
+Press any key to continue . . .
+ test case 3
+Enter Total Process:     5
+Enter Arrival Time  for Process  Number 1 :1
+Enter Arrival Time  for Process  Number 2 :2
+Enter Arrival Time  for Process  Number 3 :3
+Enter Arrival Time  for Process  Number 4 :4
+Enter Arrival Time  for Process  Number 5 :5
+Enter Burst Time for Process  Number 1 :4
+Enter Burst Time for Process  Number 2 :5
+Enter Burst Time for Process  Number 3 :6
+Enter Burst Time for Process  Number 4 :7
+Enter Burst Time for Process  Number 5 :8
+Enter Time Quantum in milli seconds:    30
+
+
+Process |        Arrival TimeS  |                Burst Time     |       Turnaround Time |       Waiting Time
+
+ P[1]   |        1              |                        4      |        15             |            11
+ P[2]   |        2              |                        5      |        16             |            11
+ P[3]   |        3              |                        6      |        18             |            12
+ P[4]   |        4              |                        7      |        24             |            17
+ P[5]   |        5              |                        8      |        25             |            17
+
+Average Waiting Time= 13.600000
+Avg Turnaround Time = 19.600000
+--------------------------------
+Process exited after 13.58 seconds with return value 0
+Press any key to continue . . .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
