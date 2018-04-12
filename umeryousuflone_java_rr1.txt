@@ -1,0 +1,149 @@
+//Java program for implementation of RR scheduling
+import java.util.*; 
+public class RRS 
+{
+    static void fWTime(int processes[], int n,int at[],int bt[], int wt[], int quantum)
+    {
+        int r_bt[]=new int[n];
+        for (int i=0;i<n;i++)
+        {
+            r_bt[i]=bt[i];
+            int t=0; // Current time
+        while(true)
+        {
+            boolean done=true;
+            for (int i=0;i<n;i++)
+            {
+                if (r_bt[i]>0)
+                {
+                    done=false;
+      
+                    if (r_bt[i]>quantum)
+                    {
+                        t+=quantum;
+                        r_bt[i] -= quantum;
+                    }
+                    else
+                    {
+                      t=t+r_bt[i];
+                        wt[i]=t-bt[i]-at[i];
+                        r_bt[i]=0;
+                    }
+                }
+            }
+            if(done==true)
+              break;
+        }
+    }
+    static void fTATime(int processes[],int n,int at[],int bt[],int wt[],int tat[])
+    {        
+        // tat=bt[] + wt[]-at[]
+        for (int i=0;i<n;i++)
+            tat[i]=bt[i]+wt[i]-at[i];
+    }
+    static void favgTime(int processes[],int n,int at[],int bt[],int quantum)
+    {
+        int wt[]=new int[n],tat[]=new int[n];
+        int total_wt=0,total_tat=0;
+        fWTime(processes,n,at,bt,wt,quantum);
+        fTATime(processes, n,at,bt,wt,tat);
+        System.out.println("Processes " +"Arrival Time"+ " Burst time " +" Waiting time " + " Turn around time");
+        for (int i=0;i<n;i++)
+        {
+            total_wt=total_wt+wt[i];
+            total_tat=total_tat+tat[i];
+            System.out.println(" " + (i+1) + "\t\t" +at[i]+"\t\t"+ bt[i] +"\t\t " +wt[i] +"\t\t " + tat[i]);
+        }
+        System.out.println("Average waiting time = " +(float)total_wt / (float)n);
+        System.out.println("Average turn around time = " +(float)total_tat / (float)n);
+    }
+    public static void main(String[] args)
+    {
+   Scanner sc=new Scanner(System.in);
+        System.out.println("enter number of process");
+        int n=sc.nextInt();
+        int processes[]=new int[n];
+        System.out.println("enter name of process");
+        for(int i=0;i<n;i++)
+        {
+        processes[i]=sc.nextInt();
+        }
+        int arrival_time[] = new int[n];
+        System.out.println("enter Arrival time of process");
+        for(int i=0;i<n;i++)
+        {
+        arrival_time[i]=sc.nextInt();
+        }
+        int burst_time[] = new int[n];
+        System.out.println("enter busttime of process");
+        for(int i=0;i<n;i++)
+        {
+        burst_time[i]=sc.nextInt();
+        }
+        System.out.println("enter time quantum of process");
+        int quantum = sc.nextInt();
+        favgTime(processes,n,arrival_time,burst_time,quantum);
+    }
+}
+
+
+//***********************************************************************************//
+output
+test case1
+
+PS E:\java0> javac RRS.java
+PS E:\java0> java RRS
+enter number of process
+4
+enter name of process
+1
+2
+3
+4
+enter Arrival time of process
+1
+2
+3
+4
+enter busttime of process
+3
+4
+5
+6
+enter time quantum of process
+2
+Processes Arrival Time Burst time  Waiting time  Turn around time
+ 1              1               3                6               9
+ 2              2               4                7               11
+ 3              3               5                11              16
+ 4              4               6                12              18
+Average waiting time = 9.0
+Average turn around time = 13.5
+PS E:\java0>
+
+test case2
+PS E:\java0> javac RRS.java
+PS E:\java0> java RRS
+enter number of process
+3
+enter name of process
+1
+2
+3
+enter Arrival time of process
+0
+1
+3
+enter busttime of process
+5
+7
+4
+enter time quantum of process
+2
+Processes Arrival Time Burst time  Waiting time  Turn around time
+ 1              0               5                8               13
+ 2              1               7                9               16
+ 3              3               4                8               12
+Average waiting time = 8.333333
+Average turn around time = 13.666667
+PS E:\java0>
